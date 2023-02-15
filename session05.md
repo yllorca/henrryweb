@@ -1,4 +1,4 @@
-## Los queryset y los manager en Django
+## Intro a los queryset en Django
 
 En Django, los QuerySet y los Manager son dos componentes clave para trabajar con la base de datos.
 

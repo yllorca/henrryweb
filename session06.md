@@ -92,9 +92,21 @@ Aquí está una explicación detallada del código:
 
 Las URL patterns en Django son una forma de asociar URLs con vistas en una aplicación. Cada URL pattern especifica un patrón de URL y una vista que se encarga de procesar la solicitud HTTP correspondiente.
 
-Todas las url de nuestra app son almacenas en un archivo urls.py que debemos crear dentro de nuestra app.
+Todas las url de nuestra app son almacenas en un archivo urls.py que debemos crear dentro de nuestra app. 
 
-Por ejemplo, para nuestra vista llamada post_list que muestra una lista de publicaciones en su aplicación. Para asociar una URL con la vista post_list, puede crear una URL pattern que se vea así:
+Una vez creado el archivo debemos incluirlo en nuestro archivo principal del url de nuestro proyecto.
+
+`````
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    ....
+    path('blog/', include('blog.urls', namespace='blog')),
+]
+`````
+
+Para asociar una URL con la vista post_list, puede crear una URL pattern que se vea así:
 
 `````
 from django.urls import path

@@ -120,4 +120,6 @@ Aquí está una explicación detallada del código de nuestra url para la vista 
 
 3. name='post_detail': Aquí se está especificando un nombre para la URL pattern. Este nombre se puede usar en el código para generar URLs dinámicamente en lugar de tener que escribir la URL completa.
 
+La URL pattern se agrega a una lista de URL patterns que se encuentra en el archivo urls.py de la aplicación. Cuando un usuario visita una URL que coincide con el patrón de URL especificado en la URL pattern, Django llamará a la vista post_detail para procesar la solicitud HTTP. La vista post_detail recibirá los valores de año, mes, día y slug de la URL como argumentos y los utilizará para mostrar los detalles de una publicación específica en la aplicación.
+
 ¡Buen trabajo, Henrry!

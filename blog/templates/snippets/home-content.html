@@ -1,0 +1,65 @@
+{% load static %}
+
+<section id="content">
+    <div class="content-wrap">
+
+        <a href="#" class="button button-full button-purple center text-end header-stick bottommargin-lg">
+            <div class="container clearfix">
+                Canvas comes with Unlimited Customizations &amp; Options. <strong>Check Out</strong> <i class="icon-caret-right" style="top:4px;"></i>
+            </div>
+        </a>
+
+        <div class="container clearfix">
+
+            <div class="heading-block center">
+                <h1>Recent Articles</h1>
+                <span>We almost blog regularly about this &amp; that.</span>
+            </div>
+
+            <!-- Posts
+            ============================================= -->
+            <div id="posts" class="row gutter-30">
+                
+                {% for post in posts %}
+                <div class="entry col-12">
+                    <div class="grid-inner">
+                        <div class="entry-image">
+                            <a href="images/blog/full/17.jpg" data-lightbox="image"><img src="images/blog/standard/17.jpg" alt="Standard Post with Image"></a>
+                        </div>
+                        <div class="entry-title">
+                            <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+                        </div>
+                        <div class="entry-meta">
+                            <ul>
+                                <li><i class="icon-calendar3"></i> {{ post.publish }}</li>
+                                <li><a href="#"><i class="icon-user"></i> {{ post.author }}</a></li>
+                                <li><i class="icon-folder-open"></i> <a href="#">General</a>, <a href="#">Media</a></li>
+                                <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 13 Comments</a></li>
+                                <li><a href="#"><i class="icon-camera-retro"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="entry-content">
+                            <p>{{ post.body }}</p>
+                            <a href="{{ post.get_absolute_url }}" class="more-link">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    <p>No hay Post</p>
+                {% endfor %}
+                    
+               
+
+            </div><!-- #posts end -->
+
+            <!-- Pager
+            ============================================= -->
+            <div class="d-flex justify-content-between mt-5">
+                <a href="#" class="btn btn-outline-secondary">&larr; Older</a>
+                <a href="#" class="btn btn-outline-dark">Newer &rarr;</a>
+            </div>
+            <!-- .pager end -->
+
+        </div>
+    </div>
+</section><!-- #content end -->

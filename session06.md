@@ -134,4 +134,33 @@ Aquí está una explicación detallada del código de nuestra url para la vista 
 
 La URL pattern se agrega a una lista de URL patterns que se encuentra en el archivo urls.py de la aplicación. Cuando un usuario visita una URL que coincide con el patrón de URL especificado en la URL pattern, Django llamará a la vista post_detail para procesar la solicitud HTTP. La vista post_detail recibirá los valores de año, mes, día y slug de la URL como argumentos y los utilizará para mostrar los detalles de una publicación específica en la aplicación.
 
+## URL canónicas para modelos
+
+Las URL canónicas son una representación única y permanente de un recurso en la web. En Django, las URL canónicas se utilizan para asegurarse de que cada objeto en un modelo tenga una URL única y permanente que se pueda usar para acceder a sus detalles en el navegador.
+
+En Django, las URL canónicas se definen en el modelo usando el atributo get_absolute_url. Este atributo es un método que devuelve la URL canónica para un objeto en particular. Aquí está un ejemplo:
+
+`````
+from django.urls import reverse
+
+class Post(models.Model):
+    # ... other fields ...
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args=[str(self.publish.year),
+                                                  str(self.publish.month),
+                                                  str(self.publish.day),
+                                                  self.slug])
+`````
+
+En este ejemplo, el método get_absolute_url devuelve la URL canónica para un objeto Post utilizando la función reverse de Django. La función reverse toma un nombre de URL y argumentos y devuelve la URL correspondiente. En este caso, se está utilizando el nombre de URL 'blog:post_detail' y los argumentos correspondientes al año, mes, día y slug de la publicación para generar la URL canónica.
+
+Una vez que se ha definido el atributo get_absolute_url en el modelo, se puede acceder a la URL canónica de un objeto en cualquier parte de la aplicación simplemente llamando a obj.get_absolute_url(). Por ejemplo:
+
+``````
+post = Post.objects.get(pk=1)
+url = post.get_absolute_url()
+``````
+
+Es importante destacar que las URL canónicas son opcionales en Django, pero son muy útiles para mantener una representación permanente de los objetos en una aplicación y para facilitar la creación de enlaces a ellos en el código.
+
 ¡Buen trabajo, Henrry!

@@ -137,7 +137,6 @@ Por ejemplo, si queremos incluir un archivo CSS en la plantilla, utilizaríamos 
 
 En este ejemplo, la directiva {% load static %} carga el gestor de archivos estáticos, y luego se utiliza la directiva {% static %} para construir una URL para el archivo CSS en la aplicación.
 
-
 ## La directiva {% extends %} en la plantillas.
 
 La directiva {% extends %} en una plantilla de Django se utiliza para heredar de una plantilla base. Esta directiva permite a los desarrolladores crear plantillas base que contengan contenido estático y estructura de página común, y luego heredar de esta plantilla base para crear plantillas hijas que agreguen contenido dinámico específico.
@@ -153,8 +152,5 @@ La directiva {% extends 'base.html' %} indica que la plantilla actual hereda de 
 
 Este enfoque de herencia de plantillas es una práctica común en Django y nos permite crear y mantener fácilmente un diseño consistente y estructura de página en toda la aplicación.
 
-
-
-
-
+¡Buen trabajo, Henrry!
 

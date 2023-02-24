@@ -1,8 +1,15 @@
+import uuid
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone 
 from django.contrib.auth.models import User 
 
+
+def upload_file(instance, filename):
+    #obtengo el nombre del archivo y su extensión
+    filebase, extension = filename.split(".")[-2:]
+    ##se arma la ruta
+    return "posts/{}.{}".format(str(uuid.uuid4())[:8], extension)
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -19,7 +26,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, 
                                on_delete=models.CASCADE,
                                related_name='blog_posts') 
-    body = models.TextField() 
+    body = models.TextField()
+    photo = models.FileField(upload_to=upload_file, editable=True, null=True, blank=True) 
     publish = models.DateTimeField(default=timezone.now) 
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True) 

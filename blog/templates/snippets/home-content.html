@@ -24,10 +24,10 @@
                 <div class="entry col-12">
                     <div class="grid-inner">
                         <div class="entry-image">
-                            <a href="images/blog/full/17.jpg" data-lightbox="image"><img src="images/blog/standard/17.jpg" alt="Standard Post with Image"></a>
+                            <a href="{{ post.get_absolute_url }}" data-lightbox="image"><img src="{% if post.photo %} {{ post.photo.url }}{% else %} https://via.placeholder.com/800x450{% endif %}" alt="{{ post.title }}"></a>
                         </div>
                         <div class="">
-                            <h2><a href="{{ post.get_absolute_url }}">{{ post.title|upper }}</a></h2>
+                            <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
                         </div>
                         <div class="entry-meta">
                             <ul>
@@ -54,10 +54,7 @@
 
             <!-- Pager
             ============================================= -->
-            <div class="d-flex justify-content-between mt-5">
-                <a href="#" class="btn btn-outline-secondary">&larr; Older</a>
-                <a href="#" class="btn btn-outline-dark">Newer &rarr;</a>
-            </div>
+            {% include 'snippets/pagination-content.html' with page=posts %}
             <!-- .pager end -->
 
         </div>

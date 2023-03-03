@@ -105,90 +105,32 @@
                         <h4>Related Posts:</h4>
 
                         <div class="related-posts row posts-md col-mb-30">
+                            
+                            {% for post in similar_posts %}
 
                             <div class="entry col-12 col-md-6">
                                 <div class="grid-inner row align-items-center gutter-20">
                                     <div class="col-4">
                                         <div class="entry-image">
-                                            <a href="#"><img src="images/blog/small/10.jpg" alt="Blog Single"></a>
+                                            <a href="{{ post.get_absolute_url  }}"><img src="{% if post.photo %} {{ post.photo.url }}{% else %} https://via.placeholder.com/800x450{% endif %}" alt="{{ post.title }}"></a>
                                         </div>
                                     </div>
                                     <div class="col-8">
                                         <div class="entry-title title-xs">
-                                            <h3><a href="#">This is an Image Post</a></h3>
+                                            <h3><a href="{{ post.get_absolute_url  }}">{{ post.title }}</a></h3>
                                         </div>
                                         <div class="entry-meta">
                                             <ul>
-                                                <li><i class="icon-calendar3"></i> 10th July 2021</li>
-                                                <li><a href="#"><i class="icon-comments"></i> 12</a></li>
+                                                <li><i class="icon-calendar3"></i> {{ post.publish }}</li>
+                                                <li><a href="{{ post.get_absolute_url  }}"><i class="icon-comments"></i> 12</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="entry col-12 col-md-6">
-                                <div class="grid-inner row align-items-center gutter-20">
-                                    <div class="col-4">
-                                        <div class="entry-image">
-                                            <a href="#"><img src="images/blog/small/20.jpg" alt="Blog Single"></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="entry-title title-xs">
-                                            <h3><a href="#">This is a Video Post</a></h3>
-                                        </div>
-                                        <div class="entry-meta">
-                                            <ul>
-                                                <li><i class="icon-calendar3"></i> 24th July 2021</li>
-                                                <li><a href="#"><i class="icon-comments"></i> 16</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="entry col-12 col-md-6">
-                                <div class="grid-inner row align-items-center gutter-20">
-                                    <div class="col-4">
-                                        <div class="entry-image">
-                                            <a href="#"><img src="images/blog/small/21.jpg" alt="Blog Single"></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="entry-title title-xs">
-                                            <h3><a href="#">This is a Gallery Post</a></h3>
-                                        </div>
-                                        <div class="entry-meta">
-                                            <ul>
-                                                <li><i class="icon-calendar3"></i> 8th Aug 2021</li>
-                                                <li><a href="#"><i class="icon-comments"></i> 8</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="entry col-12 col-md-6">
-                                <div class="grid-inner row align-items-center gutter-20">
-                                    <div class="col-4">
-                                        <div class="entry-image">
-                                            <a href="#"><img src="images/blog/small/22.jpg" alt="Blog Single"></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="entry-title title-xs">
-                                            <h3><a href="#">This is an Audio Post</a></h3>
-                                        </div>
-                                        <div class="entry-meta">
-                                            <ul>
-                                                <li><i class="icon-calendar3"></i> 22nd Aug 2021</li>
-                                                <li><a href="#"><i class="icon-comments"></i> 21</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% empty %}
+    							<p>Sin recomendaciones</p>
+                            {% endfor %}
 
                         </div>
 

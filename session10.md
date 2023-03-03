@@ -122,4 +122,74 @@ En la plantilla, puedes acceder a los tags de un post de la siguiente manera:
 {% endfor %}
 `````
 
+## Mostrar articulos similares
+
+Ahora que hemos implementado el etiquetado de las publicaciones de nuestro blog, podemos hacer muchas cosas interesantes con ellas. Usando etiquetas, podemos clasificar muy bien las publicaciones de nuestro blog. 
+
+Las publicaciones sobre temas similares tendrán varias etiquetas en común. 
+
+Construiremos una funcionalidad para mostrar publicaciones similares por la cantidad de etiquetas que comparten. De esta forma, cuando un usuario lee una publicación, podemos sugerirle que lea otras publicaciones relacionadas. 
+
+Para recuperar publicaciones similares para una publicación específica, debemos realizar los siguientes pasos:
+
+1. Recuperar todas las etiquetas de la publicación actual
+
+2. Vamos a obtener todas las publicaciones que se etiquetan con cualquiera de esas etiquetas
+
+3. Vamos a exluir de la publicación actual de esa lista para evitar recomendar la misma publicación
+
+4. Ordene los resultados por el número de etiquetas compartidas con la publicación actual.
+
+5. En caso de dos o más publicaciones con el mismo número de etiquetas, recomendar la publicación más reciente
+
+6. Limitar la consulta al número de publicaciones que queremos recomendar 
+
+Estos pasos se traducen en un QuerySet complejo que incluiremos en nuestra vista post_detail
+
+Importamos en nuestro view
+
+`````
+from django.db.models import Count
+`````
+
+El import Count de django.db.models es una clase que se utiliza para agregar una funcionalidad de conteo a una consulta de base de datos en Django. Esta clase permite contar el número de ocurrencias de un objeto o un campo específico en una consulta de base de datos y retornar el resultado en una consulta de base de datos. Por ejemplo, podrías usar la clase Count para contar el número de comentarios que tienen una publicación y retornar el resultado en una consulta. Esto te permite realizar consultas más complejas y obtener resultados más precisos y detallados.
+
+Existen muchas otras funciones de agregación en Django. Algunas de las más comunes incluyen:
+
+- Sum: Calcula la suma de un campo numérico.
+- Avg: Calcula el promedio de un campo numérico.
+- Min: Calcula el valor mínimo de un campo numérico.
+- Max: Calcula el valor máximo de un campo numérico.
+- Stddev: Calcula la desviación estándar de un campo numérico.
+- Variance: Calcula la varianza de un campo numérico.
+- F: Agrupa y combina varias funciones de agregación en una sola consulta.
+
+Todas estas funciones se utilizan en combinación con la función .aggregate() para realizar consultas complejas.
+
+Nuestro lógica para filtrar los publicaciones relacionas seria asi:
+
+`````
+    # List of similar posts
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids)\
+                                  .exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+                                .order_by('-same_tags','-publish')[:4]
+`````
+
+Este fragmento de código busca publicaciones similares a la publicación actual. Aquí está lo que hace cada línea de código:
+
+1. post_tags_ids = post.tags.values_list('id', flat=True): obtiene una lista de los IDs de los tags asociados a la publicación actual. La función values_list devuelve una lista de valores de un campo específico en lugar de objetos completos. La opción flat=True indica que se devuelve una lista plana en lugar de una lista de tuplas.
+
+2. similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id): filtra las publicaciones que tienen alguno de los mismos tags que la publicación actual y excluye la publicación actual. El filtro tags__in se aplica a los tags asociados a cada publicación y devuelve las publicaciones que tienen al menos uno de los IDs de tag en la lista post_tags_ids.
+
+3. similar_posts = similar_posts.annotate(same_tags=Count('tags')): agrega una nueva columna llamada same_tags que contiene el número de tags que tienen en común cada publicación similar y la publicación actual. La función Count cuenta el número de tags asociados con cada publicación similar.
+
+4. similar_posts.order_by('-same_tags','-publish')[:4]: ordena las publicaciones similares por el número de tags que tienen en común con la publicación actual y la fecha de publicación, y luego selecciona solo las 4 primeras publicaciones. La opción -same_tags indica que las publicaciones con más tags en común deben aparecer primero en la lista, y la opción -publish indica que las publicaciones más recientes deben aparecer primero en la lista si dos publicaciones tienen el mismo número de tags en común.
+
+
+
+
+
+
 ¡Buen trabajo, Henrry!

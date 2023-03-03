@@ -15,6 +15,12 @@
                 <h1>Recent Articles</h1>
                 <span>We almost blog regularly about this &amp; that.</span>
             </div>
+            
+            {% if tag %}
+            <div class="heading">
+                <h2>Posts etiquetados con "{{ tag.name }}"</h2>
+            </div>
+            {% endif %}
 
             <!-- Posts
             ============================================= -->
@@ -33,7 +39,16 @@
                             <ul>
                                 <li><i class="icon-calendar3"></i> {{ post.publish }}</li>
                                 <li><a href="#"><i class="icon-user"></i> {{ post.author }}</a></li>
-                                <li><i class="icon-folder-open"></i> <a href="#">General</a>, <a href="#">Media</a></li>
+                                <li><i class="icon-folder-open"></i>
+                                    {% for tag in post.tags.all %}
+                                        <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                                        {{ tag.name }}
+                                        </a>
+                                        {% if not forloop.last %}, {% endif %}
+                                        {% empty %}
+                                        Sin tags
+                                    {% endfor %}
+                                </li>
                                 <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 13 Comments</a></li>
                                 <li><a href="#"><i class="icon-camera-retro"></i></a></li>
                             </ul>

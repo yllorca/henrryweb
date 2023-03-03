@@ -140,6 +140,7 @@ El número de comentarios se obtiene a través de la propiedad "count" en el obj
 
 El filtro "pluralize" se usa para determinar si se debe mostrar "comentario" o "comentarios" dependiendo de si hay uno o más comentarios.
 
+¡Buen trabajo, Henrry!
 
 
 

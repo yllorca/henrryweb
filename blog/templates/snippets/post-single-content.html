@@ -23,9 +23,18 @@
                             ============================================= -->
                             <div class="entry-meta">
                                 <ul>
-                                    <li><i class="icon-calendar3"></i> 10th July 2021</li>
-                                    <li><a href="#"><i class="icon-user"></i> admin</a></li>
-                                    <li><i class="icon-folder-open"></i> <a href="#">General</a>, <a href="#">Media</a></li>
+                                    <li><i class="icon-calendar3"></i> {{ post.publish }}</li>
+                                    <li><a href="#"><i class="icon-user"></i> {{ post.author }}</a></li>
+                                    <li><i class="icon-folder-open"></i> 
+                                        {% for tag in post_tags %}
+                                            <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                                            {{ tag.name }}
+                                            </a>
+                                            {% if not forloop.last %}, {% endif %}
+                                            {% empty %}
+                                                Sin tags
+                                        {% endfor %}
+                                    </li>
                                     <li><a href="#"><i class="icon-comments"></i> 43 Comments</a></li>
                                     <li><a href="#"><i class="icon-camera-retro"></i></a></li>
                                 </ul>
@@ -47,12 +56,13 @@
                                 <!-- Tag Cloud
                                 ============================================= -->
                                 <div class="tagcloud clearfix bottommargin topmargin">
-                                    <a href="#">general</a>
-                                    <a href="#">information</a>
-                                    <a href="#">media</a>
-                                    <a href="#">press</a>
-                                    <a href="#">gallery</a>
-                                    <a href="#">illustration</a>
+                                    {% for tag in post_tags %}
+                                            <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                                            {{ tag.name }}
+                                            </a>
+                                            {% empty %}
+                                                Sin tags
+                                        {% endfor %}
                                 </div><!-- .tagcloud end -->
 
                                 <div class="clear"></div>

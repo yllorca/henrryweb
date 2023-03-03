@@ -1,11 +1,17 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from blog.forms import CommentForm
-
+from taggit.models import Tag
 from blog.models import Post
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     posts = Post.published.all()
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+
     paginator = Paginator(posts, 1) # 3 posts in each page
     page = request.GET.get('page')
     try:
@@ -17,7 +23,7 @@ def post_list(request):
         # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
     
-    return render(request, 'home.html', {'page': page, 'posts': posts})
+    return render(request, 'home.html', {'page': page, 'posts': posts, 'tag': tag})
 
 
 def post_detail(request, year, month, day, post):
@@ -28,6 +34,9 @@ def post_detail(request, year, month, day, post):
                                    publish__day=day)
     
 
+    # List of tags for this post
+    post_tags = post.tags.all()
+    
     # List of active comments for this post
     comments = post.comments.filter(active=True)
 
@@ -52,4 +61,5 @@ def post_detail(request, year, month, day, post):
                    'comments': comments,
                     'new_comment': new_comment,
                     'comment_form': comment_form,
+                    'post_tags': post_tags,
                     })

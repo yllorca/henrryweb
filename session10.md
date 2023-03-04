@@ -187,9 +187,4 @@ Este fragmento de código busca publicaciones similares a la publicación actual
 
 4. similar_posts.order_by('-same_tags','-publish')[:4]: ordena las publicaciones similares por el número de tags que tienen en común con la publicación actual y la fecha de publicación, y luego selecciona solo las 4 primeras publicaciones. La opción -same_tags indica que las publicaciones con más tags en común deben aparecer primero en la lista, y la opción -publish indica que las publicaciones más recientes deben aparecer primero en la lista si dos publicaciones tienen el mismo número de tags en común.
 
-
-
-
-
-
 ¡Buen trabajo, Henrry!

@@ -1,0 +1,7 @@
+<div class="tagcloud clearfix bottommargin">
+    {% for tag in used_tags %}
+    <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+        {{ tag.name }}
+        </a>
+    {% endfor %}
+</div><!-- .tagcloud end -->

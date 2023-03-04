@@ -1,0 +1,24 @@
+{% load blog_tags %}
+{% for post in most_commented_posts %}
+<div class="entry col-12">
+    <div class="grid-inner row g-0">
+        <div class="col-auto">
+            <div class="entry-image">
+                <a href="{{ post.get_absolute_url }}"><img class="rounded-circle" src="{% if post.photo %} {{ post.photo.url }}{% else %} https://via.placeholder.com/800x450{% endif %}" alt="{{ post.title }}"></a>
+            </div>
+        </div>
+        <div class="col ps-3">
+            <div class="entry-title">
+                <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+            </div>
+            <div class="entry-meta">
+                <ul>
+                    <li><i class="icon-comments-alt"></i> {% comment_count post.id %} Comments</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<p>No hay post con comentarios</p>
+{% endfor %}

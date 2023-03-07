@@ -54,7 +54,7 @@
                             </ul>
                         </div>
                         <div class="entry-content">
-                            <p>{{ post.body }}</p>
+                            <p>{{ post.body|safe }}</p>
                             <a href="{{ post.get_absolute_url }}" class="more-link">Read More</a>
                         </div>
                     </div>

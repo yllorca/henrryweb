@@ -9,7 +9,7 @@ y ejecutamos:
 pip install django-taggit
 `````
 
-Agregamos el biblioteca a nuestro archivo INSTALL_APP de django
+Agregamos el biblioteca a nuestro archivo INSTALLED_APPS de django
 
 Después en nuestro archivo models.py de nuestro app blog agregamos
 el manager personalizado de nuestro biblioteca taggit
@@ -20,7 +20,7 @@ from taggit.managers import TaggableManager # hay que importalos
 tags = TaggableManager() # manager de la libreria taggit
 `````
 
-Ahora debemos correr el makemigrations y el migration para agregar
+Ahora debemos correr el makemigrations y el migrate para agregar
 las tablas respectivas a la BD.
 
 Debo modificar mi vista post_list para agregar el la funcionalidad del tag:

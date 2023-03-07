@@ -73,4 +73,83 @@ Por ejemplo ahora puedes ocupar el tag en tu template:
 {% total_posts %}
 `````
 
-Ahora vamos a crear otro tag para mostrar los ul
+## Custom tag de nuestro proyecto blog
+
+1. Comment_count
+
+`````
+@register.simple_tag
+def comment_count(post_id):
+    post = Post.objects.get(id=post_id)
+    return post.comments.filter(active=True).count()
+`````
+
+La función hace uso de la relación de uno a muchos existente entre el modelo "Post" y "Comment" para obtener una instancia del modelo "Post" que coincida con el identificador proporcionado (post_id). Luego, se filtran solo los comentarios activos (campo "active" es True) y se cuenta su número mediante el método "count()". Finalmente, se retorna el resultado.
+
+Ahora podemos usar el tag en nuestro template de la siguiente manera:
+
+En nuestro archivo home-content.html agregamos lo siguiente
+
+`````
+{% comment_count post.id %}
+`````
+
+La primera parte es el nombre de nuestro tag y la segunda parte es el
+arg del post.id que hay que pasarle para que nos retorne el total de comentarios de ese post unicamente.
+
+2. show_used_tags
+
+`````
+@register.inclusion_tag('snippets/used_tags.html')
+def show_used_tags(count=20):
+    used_tags = Post.tags.all()[:count]
+    print(type(used_tags))
+    return {'used_tags': used_tags}
+`````
+
+La función show_used_tags es un inclusion_tag de Django, lo que significa que permite incluir un fragmento de HTML en una plantilla de Django. Este tag específico se utiliza para mostrar una lista de las count etiquetas más utilizadas en los posts de la aplicación.
+
+La función toma un argumento opcional count, que especifica el número de etiquetas que se deben mostrar. Si no se proporciona un valor, se usará el valor predeterminado de 20.
+
+La función obtiene una lista de las etiquetas utilizadas en los posts a través del atributo tags en el modelo Post. Este atributo es un TaggableManager, que permite asignar etiquetas a los posts. La función obtiene las count primeras etiquetas de la lista de etiquetas y las asigna a la variable used_tags.
+
+Finalmente, la función devuelve un diccionario con una clave 'used_tags' que contiene la lista de etiquetas utilizadas. Esta información se utiliza en la plantilla snippets/used_tags.html para mostrar las etiquetas en la página web.
+
+3. show_latest_posts
+
+`````
+@register.inclusion_tag('snippets/latest_posts.html')
+def show_latest_posts(count=5):
+    latest_posts = Post.published.order_by('-publish')[:count]
+    return {'latest_posts': latest_posts}
+``````
+
+La función show_latest_posts es una función de inclusion tag de Django, que se utiliza para incluir un fragmento de HTML en otra página o plantilla. La función toma como argumento un conteo (count) que especifica cuántos de los últimos posts deben ser mostrados.
+
+Dentro de la función, primero se obtiene un queryset con los últimos count posts publicados, usando el manager published y ordenándolos por la fecha de publicación (-publish). Luego, el queryset se pasa a un diccionario como una variable llamada latest_posts.
+
+Finalmente, la función devuelve el diccionario, que luego se utiliza en el archivo snippets/latest_posts.html para mostrar los últimos posts en la plantilla.
+
+4. show_most_commented_posts
+
+
+`````
+@register.inclusion_tag('snippets/most_commented_posts.html')
+def show_most_commented_posts(count=5):
+    most_commented_posts = Post.published.filter(comments__active=True).annotate(
+               total_comments=Count('comments')
+           ).order_by('-total_comments')[:count]
+    return {'most_commented_posts': most_commented_posts}
+`````
+
+Esta función es un inclusion_tag personalizado en Django que se utiliza para mostrar los "count" número de publicaciones más comentadas en el blog. La función hace lo siguiente:
+
+Obtiene los objetos "Post" publicados y filtra solo aquellos que tengan comentarios activos.
+
+Utiliza el método "annotate" para agregar una nueva columna "total_comments" al queryset, que es la suma de los comentarios activos para cada publicación.
+
+Ordena el queryset por "total_comments" en orden descendente y selecciona los "count" primeros elementos.
+
+Finalmente, retorna un diccionario con la clave "most_commented_posts" que contiene el queryset seleccionado. Este diccionario será utilizado para renderizar el archivo "snippets/most_commented_posts.html" que se especifica en la decoración "@register.inclusion_tag".
+
+¡Buen trabajo, Henrry!

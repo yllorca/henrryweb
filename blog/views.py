@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from blog.forms import CommentForm
+from blog.forms import CommentForm, SearchForm
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.db.models import Count
 from taggit.models import Tag
 from blog.models import Post
@@ -73,3 +74,23 @@ def post_detail(request, year, month, day, post):
                     'post_tags': post_tags,
                     'similar_posts': similar_posts
                     })
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            vector_query = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+            search_query = SearchQuery(query)
+            results = Post.objects.annotate(
+                search=vector_query,
+            ).filter(search=search_query)
+    return render(request,
+                  'search.html',
+                  {'form': form,
+                   'query': query,
+                   'results': results})
